@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import ImageWithFallback from "./figma/ImageWithFallback";
+import Image from "next/image";
 
 interface MutualConnection {
   name: string;
@@ -25,6 +25,7 @@ export function LinkedInStyleAlumniCard({
   avatar,
   verified = false,
 }: LinkedInStyleAlumniCardProps) {
+  const fallback = "/logo.jpeg";
   return (
     <Card className="bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-200 overflow-hidden group">
       <CardContent className="p-0">
@@ -36,7 +37,16 @@ export function LinkedInStyleAlumniCard({
           <div className="flex justify-center mb-3">
             <div className="w-16 h-16 rounded-full border-4 border-white bg-white shadow-sm overflow-hidden">
               {avatar ? (
-                <ImageWithFallback src={avatar} alt={name} className="w-full h-full object-cover" />
+                <Image
+                  src={avatar}
+                  alt={name}
+                  width={64}
+                  height={64}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = fallback;
+                  }}
+                />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-navy-500 to-navy-600 flex items-center justify-center">
                   <span className="text-white font-medium text-lg">
@@ -64,7 +74,16 @@ export function LinkedInStyleAlumniCard({
               {mutualConnections.slice(0, 3).map((c, i) => (
                 <div key={i} className="w-6 h-6 rounded-full border-2 border-white overflow-hidden bg-gray-200">
                   {c.avatar ? (
-                    <ImageWithFallback src={c.avatar} alt={c.name} className="w-full h-full object-cover" />
+                    <Image
+                      src={c.avatar}
+                      alt={c.name}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = fallback;
+                      }}
+                    />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center">
                       <span className="text-white text-xs">
